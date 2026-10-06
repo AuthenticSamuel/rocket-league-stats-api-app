@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Team } from "@/types/types";
+
 defineProps<{
   team: Team;
 }>();

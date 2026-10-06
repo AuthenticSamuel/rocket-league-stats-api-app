@@ -5,14 +5,9 @@ import TeamIndicator from "@/components/TeamIndicator.vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { useMatch } from "@/composables/useMatch";
+import { speedFormatter } from "@/lib/format";
 
 const { ballSpeed, highestRecentBallSpeed, ballLastTouchedBy } = useMatch();
-
-const speedFormatter = Intl.NumberFormat("en", {
-  style: "unit",
-  unit: "kilometer-per-hour",
-  maximumFractionDigits: 1,
-});
 
 const formattedSpeed = computed(() => {
   return speedFormatter.format(ballSpeed.value ?? 0);

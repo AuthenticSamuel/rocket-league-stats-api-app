@@ -6,6 +6,7 @@ export const PLATFORM = {
   PS4: "PS4",
   XBOX_ONE: "XboxOne",
   SWITCH: "Switch",
+  UNKNOWN: "Unknown",
 } as const;
 
 type PlatformKey = keyof typeof PLATFORM;
@@ -26,6 +27,9 @@ export const PLATFORMS = {
   },
   [PLATFORM.SWITCH]: {
     label: "Nintendo Switch",
+  },
+  [PLATFORM.UNKNOWN]: {
+    label: "Unknown",
   },
 };
 

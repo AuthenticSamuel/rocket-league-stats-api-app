@@ -8,6 +8,7 @@ const PLATFORM_MAP = {
   [PLATFORM.PS4]: "psn",
   [PLATFORM.XBOX_ONE]: "xbl",
   [PLATFORM.SWITCH]: "switch",
+  [PLATFORM.UNKNOWN]: null,
 } as const;
 
 export const getTrackerNetworkHref = (player: Player) => {
@@ -15,6 +16,8 @@ export const getTrackerNetworkHref = (player: Player) => {
 
   const { platform, id } = getPlayerMeta(player);
   const trnPlatform = PLATFORM_MAP[platform];
+
+  if (!platform) return null;
 
   if (platform === PLATFORM.STEAM) {
     return [base, trnPlatform, id].join("/");
