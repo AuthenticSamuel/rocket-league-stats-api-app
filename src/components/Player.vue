@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Minus, Plus } from "@lucide/vue";
 import { computed } from "vue";
 
 import PlatformBadge from "@/components/PlatformBadge.vue";
@@ -8,6 +9,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+
+import { useTracker } from "@/composables/useTracker";
 
 import { getTrackerNetworkHref } from "@/lib/tracker-network";
 
@@ -58,6 +62,8 @@ const statistics = computed<Statistic[]>(() => [
 ]);
 
 const trackerHref = computed(() => getTrackerNetworkHref(props.player));
+
+const { isTracking, getIsTracking, startTracking, stopTracking } = useTracker();
 </script>
 
 <template>
@@ -65,6 +71,26 @@ const trackerHref = computed(() => getTrackerNetworkHref(props.player));
     <div class="flex items-center gap-x-2">
       <div class="font-medium">{{ player.Name }}</div>
       <PlatformBadge :player />
+      <Button
+        v-if="getIsTracking(player)"
+        variant="secondary"
+        size="xs"
+        class="ml-auto"
+        @click="stopTracking"
+      >
+        <Minus />
+        Stop tracking
+      </Button>
+      <Button
+        v-else-if="!isTracking"
+        variant="secondary"
+        size="xs"
+        class="ml-auto"
+        @click="startTracking(player)"
+      >
+        <Plus />
+        Track
+      </Button>
     </div>
     <ul class="grid grid-cols-4 gap-1">
       <li

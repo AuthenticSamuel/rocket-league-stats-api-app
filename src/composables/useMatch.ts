@@ -7,11 +7,6 @@ export const useMatch = () => {
   const { state } = useUpdateState();
   const { getTeamByNum } = useTeams();
 
-  const timeRemaining = computed(() => {
-    if (!state.value) return null;
-    return state.value.Game.TimeSeconds;
-  });
-
   const ballSpeed = computed(() => {
     if (!state.value) return null;
     return state.value.Game.Ball.Speed;
@@ -40,8 +35,6 @@ export const useMatch = () => {
   });
 
   return {
-    timeRemaining,
-
     ballSpeed,
     highestRecentBallSpeed,
     ballLastTouchedBy,

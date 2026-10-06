@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 
 import Dashboard from "@/components/Dashboard.vue";
 import Settings from "@/components/Settings.vue";
+import Streak from "@/components/Streak.vue";
+
 import { useClient } from "@/composables/useClient";
 
 const { client, start, stop } = useClient();
@@ -30,6 +32,7 @@ onUnmounted(() => {
         Start
       </Button>
       <Settings />
+      <Streak class="ml-auto" />
     </div>
     <Dashboard v-if="client" />
   </div>
