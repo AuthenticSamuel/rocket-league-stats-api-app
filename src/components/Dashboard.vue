@@ -8,15 +8,17 @@ const { teams } = useTeams();
 </script>
 
 <template>
-  <div class="grid grid-cols-3 gap-4">
-    <TeamCard
-      v-if="teams[0]"
-      :team="teams[0]"
-    />
+  <div class="flex flex-col gap-y-4">
     <MatchCard />
-    <TeamCard
-      v-if="teams[1]"
-      :team="teams[1]"
-    />
+    <div class="grid grid-cols-2 gap-4">
+      <TeamCard
+        v-if="teams[0]"
+        :team="teams[0]"
+      />
+      <TeamCard
+        v-if="teams[1]"
+        :team="teams[1]"
+      />
+    </div>
   </div>
 </template>
