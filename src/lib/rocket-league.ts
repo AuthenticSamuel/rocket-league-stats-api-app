@@ -1,0 +1,44 @@
+import type { Player } from "@/types/types";
+
+export const PLATFORM = {
+  STEAM: "Steam",
+  EPIC: "Epic",
+  PS4: "PS4",
+  XBOX_ONE: "XboxOne",
+  SWITCH: "Switch",
+} as const;
+
+type PlatformKey = keyof typeof PLATFORM;
+export type Platform = (typeof PLATFORM)[PlatformKey];
+
+export const PLATFORMS = {
+  [PLATFORM.STEAM]: {
+    label: "Steam",
+  },
+  [PLATFORM.EPIC]: {
+    label: "Epic Games",
+  },
+  [PLATFORM.PS4]: {
+    label: "PlayStation 4",
+  },
+  [PLATFORM.XBOX_ONE]: {
+    label: "Xbox One",
+  },
+  [PLATFORM.SWITCH]: {
+    label: "Nintendo Switch",
+  },
+};
+
+export const getPlayerMeta = (player: Player) => {
+  const [platform, id, splitScreen] = player.PrimaryId.split("|") as [
+    Platform,
+    string,
+    string,
+  ];
+
+  return {
+    platform,
+    id,
+    isSplitScreen: splitScreen === "1",
+  };
+};

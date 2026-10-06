@@ -1,4 +1,4 @@
 allowBuilds:
   vue-demi: true
 minimumReleaseAgeExclude:
-  - '@infernaldev/rlstats@1.1.0 || 1.1.1'
+  - '@infernaldev/rlstats@1.1.0 || 1.1.1 || 1.1.2'

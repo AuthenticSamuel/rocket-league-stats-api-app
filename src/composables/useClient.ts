@@ -1,15 +1,19 @@
 import { RocketLeagueStatsClient } from "@infernaldev/rlstats";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+
+import { useSettings } from "@/composables/useSettings";
+
+const { host, port } = useSettings();
 
 const client = ref<RocketLeagueStatsClient | null>(null);
 
-export const useRocketLeagueStatsClient = () => {
+export const useClient = () => {
   const start = () => {
     if (client.value) stop();
 
     client.value = new RocketLeagueStatsClient({
-      host: "localhost",
-      port: 49124,
+      host: host.value,
+      port: port.value,
     });
   };
 
@@ -18,6 +22,9 @@ export const useRocketLeagueStatsClient = () => {
     client.value.disconnect();
     client.value = null;
   };
+
+  watch(host, () => stop());
+  watch(port, () => stop());
 
   return {
     client,

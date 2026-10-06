@@ -1,14 +1,22 @@
 <script setup lang="ts">
-import ClientCard from "@/components/ClientCard.vue";
-import { Button } from "@/components/ui/button";
-import { useRocketLeagueStatsClient } from "@/composables/useRocketLeagueStatsClient";
+import { onUnmounted } from "vue";
 
-const { client, start, stop } = useRocketLeagueStatsClient();
+import { Button } from "@/components/ui/button";
+
+import Dashboard from "@/components/Dashboard.vue";
+import Settings from "@/components/Settings.vue";
+import { useClient } from "@/composables/useClient";
+
+const { client, start, stop } = useClient();
+
+onUnmounted(() => {
+  stop();
+});
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-2 p-4">
-    <div>
+  <div class="flex flex-col gap-y-4 p-4">
+    <div class="flex items-center gap-x-2">
       <Button
         v-if="client"
         @click="stop"
@@ -21,7 +29,8 @@ const { client, start, stop } = useRocketLeagueStatsClient();
       >
         Start
       </Button>
+      <Settings />
     </div>
-    <ClientCard v-if="client" />
+    <Dashboard v-if="client" />
   </div>
 </template>
