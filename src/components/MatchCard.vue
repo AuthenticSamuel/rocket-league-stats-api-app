@@ -1,21 +1,29 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import TeamIndicator from "@/components/TeamIndicator.vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { useMatch } from "@/composables/useMatch";
+
 import { speedFormatter } from "@/lib/format";
 
-const { ballSpeed, highestRecentBallSpeed, ballLastTouchedBy } = useMatch();
+const { ballSpeed, highestRecentBallSpeed } = useMatch();
 
-const formattedSpeed = computed(() => {
-  return speedFormatter.format(ballSpeed.value ?? 0);
-});
+type Statistic = {
+  label: string;
+  value: string | number;
+};
 
-const formattedHighestRecentSpeed = computed(() => {
-  return speedFormatter.format(highestRecentBallSpeed.value);
-});
+const statistics = computed<Statistic[]>(() => [
+  {
+    label: "Ball speed",
+    value: speedFormatter.format(ballSpeed.value ?? 0),
+  },
+  {
+    label: "Max ball speed (last 3 seconds)",
+    value: speedFormatter.format(highestRecentBallSpeed.value),
+  },
+]);
 </script>
 
 <template>
@@ -24,15 +32,18 @@ const formattedHighestRecentSpeed = computed(() => {
       <CardTitle>Match</CardTitle>
     </CardHeader>
     <CardContent>
-      <div>Ball speed: {{ formattedSpeed }}</div>
-      <div>Highest recent speed: {{ formattedHighestRecentSpeed }}</div>
-      <div class="flex items-baseline gap-x-1">
-        Last touched by:
-        <TeamIndicator
-          v-if="ballLastTouchedBy"
-          :team="ballLastTouchedBy"
-        />
-      </div>
+      <ul class="grid grid-cols-4 gap-1">
+        <li
+          v-for="statistic in statistics"
+          :key="statistic.label"
+          class="flex flex-col"
+        >
+          <div class="text-lg font-medium">
+            {{ statistic.value }}
+          </div>
+          <div>{{ statistic.label }}</div>
+        </li>
+      </ul>
     </CardContent>
   </Card>
 </template>

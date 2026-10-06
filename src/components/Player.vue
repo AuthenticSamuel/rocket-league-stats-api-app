@@ -22,42 +22,40 @@ type Statistic = {
   value: number;
 };
 
-const statistics = computed<Statistic[]>(() => {
-  return [
-    {
-      label: "Score",
-      value: props.player.Score,
-    },
-    {
-      label: "Goals",
-      value: props.player.Goals,
-    },
-    {
-      label: "Assists",
-      value: props.player.Assists,
-    },
-    {
-      label: "Shots",
-      value: props.player.Shots,
-    },
-    {
-      label: "Saves",
-      value: props.player.Saves,
-    },
-    {
-      label: "Touches",
-      value: props.player.Touches,
-    },
-    {
-      label: "Bumps",
-      value: props.player.CarTouches,
-    },
-    {
-      label: "Demos",
-      value: props.player.Demos,
-    },
-  ];
-});
+const statistics = computed<Statistic[]>(() => [
+  {
+    label: "Score",
+    value: props.player.Score,
+  },
+  {
+    label: "Goals",
+    value: props.player.Goals,
+  },
+  {
+    label: "Assists",
+    value: props.player.Assists,
+  },
+  {
+    label: "Shots",
+    value: props.player.Shots,
+  },
+  {
+    label: "Saves",
+    value: props.player.Saves,
+  },
+  {
+    label: "Touches",
+    value: props.player.Touches,
+  },
+  {
+    label: "Bumps",
+    value: props.player.CarTouches,
+  },
+  {
+    label: "Demos",
+    value: props.player.Demos,
+  },
+]);
 
 const trackerHref = computed(() => getTrackerNetworkHref(props.player));
 </script>
@@ -84,7 +82,7 @@ const trackerHref = computed(() => getTrackerNetworkHref(props.player));
     >
       <AccordionItem :value="player.PrimaryId">
         <AccordionTrigger>Tracker</AccordionTrigger>
-        <AccordionContent>
+        <AccordionContent class="pb-0">
           <iframe
             :src="trackerHref"
             class="h-[50svh] w-full rounded"

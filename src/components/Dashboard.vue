@@ -12,12 +12,9 @@ const { teams } = useTeams();
     <MatchCard />
     <div class="grid grid-cols-2 gap-4">
       <TeamCard
-        v-if="teams[0]"
-        :team="teams[0]"
-      />
-      <TeamCard
-        v-if="teams[1]"
-        :team="teams[1]"
+        v-for="team in teams"
+        :key="team.TeamNum"
+        :team
       />
     </div>
   </div>
