@@ -6,8 +6,13 @@ import { useTracker } from "@/composables/useTracker";
 
 const history = ref<boolean[]>([]);
 
-const winCount = computed(() => history.value.filter((isWin) => isWin));
-const lossCount = computed(() => history.value.filter((isWin) => !isWin));
+const winCount = computed(() => {
+  return history.value.filter((isWin) => isWin).length;
+});
+
+const lossCount = computed(() => {
+  return history.value.filter((isWin) => !isWin).length;
+});
 
 const streak = computed(() => {
   const isWinStreak = history.value.at(-1) ?? null;

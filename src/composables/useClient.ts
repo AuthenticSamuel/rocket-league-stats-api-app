@@ -1,12 +1,12 @@
 import { RocketLeagueStatsClient } from "@infernaldev/rlstats";
 import { createEventHook } from "@vueuse/core";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 
 import { useSettings } from "@/composables/useSettings";
 
 import type { GameEvent } from "@/types/types";
 
-const { host, port } = useSettings();
+const { settings, onSettingsChange } = useSettings();
 
 const client = ref<RocketLeagueStatsClient | null>(null);
 
@@ -29,8 +29,8 @@ export const useClient = () => {
     if (client.value) stop();
 
     client.value = new RocketLeagueStatsClient({
-      host: host.value,
-      port: port.value,
+      host: settings.value.host,
+      port: settings.value.port,
     });
 
     createHooks();
@@ -45,8 +45,7 @@ export const useClient = () => {
     clearHooks();
   };
 
-  watch(host, () => stop());
-  watch(port, () => stop());
+  onSettingsChange(() => stop());
 
   return {
     client,
