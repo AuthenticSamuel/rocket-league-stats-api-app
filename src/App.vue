@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onUnmounted } from "vue";
 
-import { Button } from "@/components/ui/button";
-
 import Dashboard from "@/components/Dashboard.vue";
 import Settings from "@/components/Settings.vue";
 import Streak from "@/components/Streak.vue";
+import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
+import { Button } from "@/components/ui/button";
 
 import { useClient } from "@/composables/useClient";
 
@@ -32,6 +32,7 @@ onUnmounted(() => {
         Start
       </Button>
       <Settings />
+      <ThemeSwitcher />
       <Streak class="ml-auto" />
     </div>
     <Dashboard v-if="client" />
