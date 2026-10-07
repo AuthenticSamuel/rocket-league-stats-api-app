@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { Loader2 } from "@lucide/vue";
 import { onUnmounted, ref } from "vue";
 
 import Dashboard from "@/components/Dashboard.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
+import RecentPlayers from "@/components/RecentPlayers.vue";
 import Settings from "@/components/Settings.vue";
 import Streak from "@/components/Streak.vue";
 import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import { Button } from "@/components/ui/button";
 
 import { useClient } from "@/composables/useClient";
-import { Loader2 } from "@lucide/vue";
 
 const { start, stop, onConnect, onDisconnect, onError } = useClient();
 
@@ -49,22 +50,27 @@ const handleDisconnectClick = () => {
 
 <template>
   <div class="flex flex-col gap-y-4 p-4">
-    <div class="flex items-center gap-x-2">
-      <Button
-        :disabled="isLoading"
-        @click="isConnected ? handleDisconnectClick() : handleConnectClick()"
-      >
-        <Loader2
-          v-if="isLoading"
-          class="animate-spin"
-        />
-        <template v-if="isConnected">Disconnect</template>
-        <template v-else-if="isLoading">Connecting...</template>
-        <template v-else>Connect</template>
-      </Button>
-      <Settings />
-      <ThemeSwitcher />
-      <Streak class="ml-auto" />
+    <div class="flex items-center justify-between gap-x-2">
+      <div class="flex items-center gap-x-2">
+        <Button
+          :disabled="isLoading"
+          @click="isConnected ? handleDisconnectClick() : handleConnectClick()"
+        >
+          <Loader2
+            v-if="isLoading"
+            class="animate-spin"
+          />
+          <template v-if="isConnected">Disconnect</template>
+          <template v-else-if="isLoading">Connecting...</template>
+          <template v-else>Connect</template>
+        </Button>
+        <Settings />
+        <ThemeSwitcher />
+      </div>
+      <div class="flex items-center gap-x-2">
+        <RecentPlayers />
+        <Streak />
+      </div>
     </div>
     <ErrorAlert v-if="isError" />
     <Dashboard v-else-if="isConnected" />

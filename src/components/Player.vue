@@ -61,7 +61,9 @@ const statistics = computed<Statistic[]>(() => [
   },
 ]);
 
-const trackerHref = computed(() => getTrackerNetworkHref(props.player));
+const trackerHref = computed(() => {
+  return getTrackerNetworkHref(props.player.PrimaryId, props.player.Name);
+});
 
 const { isTracking, getIsTracking, startTracking, stopTracking } = useTracker();
 </script>

@@ -10,7 +10,7 @@ const props = defineProps<{
   player: Player;
 }>();
 
-const meta = computed(() => getPlayerMeta(props.player));
+const meta = computed(() => getPlayerMeta(props.player.PrimaryId));
 
 const platform = computed(() => PLATFORMS[meta.value.platform]);
 </script>

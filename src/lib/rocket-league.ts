@@ -1,5 +1,3 @@
-import type { Player } from "@/types/types";
-
 export const PLATFORM = {
   STEAM: "Steam",
   EPIC: "Epic",
@@ -33,8 +31,8 @@ export const PLATFORMS = {
   },
 };
 
-export const getPlayerMeta = (player: Player) => {
-  const [platform, id, splitScreen] = player.PrimaryId.split("|") as [
+export const getPlayerMeta = (primaryId: string) => {
+  const [platform, id, splitScreen] = primaryId.split("|") as [
     Platform,
     string,
     string,

@@ -1,7 +1,5 @@
 import { PLATFORM, getPlayerMeta } from "@/lib/rocket-league";
 
-import type { Player } from "@/types/types";
-
 const PLATFORM_MAP = {
   [PLATFORM.STEAM]: "steam",
   [PLATFORM.EPIC]: "epic",
@@ -11,10 +9,10 @@ const PLATFORM_MAP = {
   [PLATFORM.UNKNOWN]: null,
 } as const;
 
-export const getTrackerNetworkHref = (player: Player) => {
+export const getTrackerNetworkHref = (primaryId: string, username: string) => {
   const base = "https://rocketleague.tracker.network/rocket-league/profile";
 
-  const { platform, id } = getPlayerMeta(player);
+  const { platform, id } = getPlayerMeta(primaryId);
   const trnPlatform = PLATFORM_MAP[platform];
 
   if (!platform) return null;
@@ -23,5 +21,5 @@ export const getTrackerNetworkHref = (player: Player) => {
     return [base, trnPlatform, id].join("/");
   }
 
-  return [base, trnPlatform, player.Name].join("/");
+  return [base, trnPlatform, username].join("/");
 };
