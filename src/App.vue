@@ -1,40 +1,72 @@
 <script setup lang="ts">
-import { onUnmounted } from "vue";
+import { onUnmounted, ref } from "vue";
 
 import Dashboard from "@/components/Dashboard.vue";
+import ErrorAlert from "@/components/ErrorAlert.vue";
 import Settings from "@/components/Settings.vue";
 import Streak from "@/components/Streak.vue";
 import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import { Button } from "@/components/ui/button";
 
 import { useClient } from "@/composables/useClient";
+import { Loader2 } from "@lucide/vue";
 
-const { client, start, stop } = useClient();
+const { start, stop, onConnect, onDisconnect, onError } = useClient();
 
 onUnmounted(() => {
   stop();
 });
+
+const isLoading = ref(false);
+const isConnected = ref(false);
+const isError = ref(false);
+
+onConnect(() => {
+  isConnected.value = true;
+  isLoading.value = false;
+});
+
+onDisconnect(() => {
+  isConnected.value = false;
+});
+
+onError(() => {
+  isError.value = true;
+  isLoading.value = false;
+});
+
+const handleConnectClick = () => {
+  isLoading.value = true;
+  isError.value = false;
+  start();
+};
+
+const handleDisconnectClick = () => {
+  isError.value = false;
+  stop();
+};
 </script>
 
 <template>
   <div class="flex flex-col gap-y-4 p-4">
     <div class="flex items-center gap-x-2">
       <Button
-        v-if="client"
-        @click="stop"
+        :disabled="isLoading"
+        @click="isConnected ? handleDisconnectClick() : handleConnectClick()"
       >
-        Stop
-      </Button>
-      <Button
-        v-else
-        @click="start"
-      >
-        Start
+        <Loader2
+          v-if="isLoading"
+          class="animate-spin"
+        />
+        <template v-if="isConnected">Disconnect</template>
+        <template v-else-if="isLoading">Connecting...</template>
+        <template v-else>Connect</template>
       </Button>
       <Settings />
       <ThemeSwitcher />
       <Streak class="ml-auto" />
     </div>
-    <Dashboard v-if="client" />
+    <ErrorAlert v-if="isError" />
+    <Dashboard v-else-if="isConnected" />
   </div>
 </template>

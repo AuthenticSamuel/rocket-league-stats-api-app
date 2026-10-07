@@ -10,18 +10,22 @@ const { settings, onSettingsChange } = useSettings();
 
 const client = ref<RocketLeagueStatsClient | null>(null);
 
+const connectHook = createEventHook<Event>();
+const disconnectHook = createEventHook<CloseEvent>();
+const errorHook = createEventHook<Error>();
+
 const updateStateHook = createEventHook<GameEvent<"UpdateState">>();
 const matchEndedHook = createEventHook<GameEvent<"MatchEnded">>();
 
 const createHooks = () => {
   if (!client.value) return;
+
+  client.value.on("Connect", connectHook.trigger);
+  client.value.on("Disconnect", disconnectHook.trigger);
+  client.value.on("Error", errorHook.trigger);
+
   client.value.on("UpdateState", updateStateHook.trigger);
   client.value.on("MatchEnded", matchEndedHook.trigger);
-};
-
-const clearHooks = () => {
-  updateStateHook.clear();
-  matchEndedHook.clear();
 };
 
 export const useClient = () => {
@@ -38,11 +42,8 @@ export const useClient = () => {
 
   const stop = () => {
     if (!client.value) return;
-
     client.value.disconnect();
     client.value = null;
-
-    clearHooks();
   };
 
   onSettingsChange(() => stop());
@@ -52,6 +53,10 @@ export const useClient = () => {
 
     start,
     stop,
+
+    onConnect: connectHook.on,
+    onDisconnect: disconnectHook.on,
+    onError: errorHook.on,
 
     onUpdateState: updateStateHook.on,
     onMatchEnded: matchEndedHook.on,
