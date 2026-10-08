@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
+import { useSettings } from "@/composables/useSettings";
+
+const { host, port } = useSettings();
 </script>
 
 <template>
@@ -18,8 +22,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
           >.
         </li>
         <li>
-          Have you configured the host and port correctly ? By default, this
-          page listens to localhost on port 49124.
+          Have you configured the host and port correctly ? This page is
+          listening to {{ host }} on port {{ port }}.
         </li>
         <li>
           Have you allowed your browser to access your local network ? Needed to
