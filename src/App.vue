@@ -10,6 +10,7 @@ import Streak from "@/components/Streak.vue";
 import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import { Button } from "@/components/ui/button";
 
+import RecentMatches from "@/components/RecentMatches.vue";
 import { useClient } from "@/composables/useClient";
 
 const { start, stop, onConnect, onDisconnect, onError } = useClient();
@@ -69,6 +70,7 @@ const handleDisconnectClick = () => {
       </div>
       <div class="flex items-center gap-x-2">
         <RecentPlayers />
+        <RecentMatches />
         <Streak />
       </div>
     </div>

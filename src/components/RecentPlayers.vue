@@ -17,6 +17,7 @@ import {
   Item,
   ItemActions,
   ItemContent,
+  ItemGroup,
   ItemTitle,
 } from "@/components/ui/item";
 
@@ -52,15 +53,15 @@ const recentPlayers = computed(() => {
           <AlertTitle>Start playing to track recently met players.</AlertTitle>
         </Alert>
       </div>
-      <ul
+      <ItemGroup
         v-else
-        class="flex flex-col overflow-y-auto px-4 pb-4"
+        class="gap-y-2 overflow-y-auto px-4 pb-4"
       >
         <Item
           v-for="(player, index) in recentPlayers"
           :key="`${player[0]}-${index}`"
-          as="li"
           as-child
+          variant="muted"
         >
           <a
             :href="getTrackerNetworkHref(player[0], player[1]) ?? '#'"
@@ -74,7 +75,7 @@ const recentPlayers = computed(() => {
             </ItemActions>
           </a>
         </Item>
-      </ul>
+      </ItemGroup>
     </SheetContent>
   </Sheet>
 </template>

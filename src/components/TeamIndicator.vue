@@ -8,9 +8,9 @@ defineProps<{
 
 <template>
   <div class="flex items-center gap-x-2">
-    <span>
+    <div class="max-w-20 overflow-x-hidden text-nowrap text-ellipsis">
       {{ team.Name }}
-    </span>
+    </div>
     <div class="flex h-4 w-2 -skew-x-12">
       <div
         class="h-4 w-1"
