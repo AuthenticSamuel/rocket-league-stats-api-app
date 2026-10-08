@@ -18,7 +18,7 @@ const updateRecentBallSpeedHistory = (speed: number | null) => {
   recentBallSpeedHistory.value.push(speed);
   setTimeout(() => {
     recentBallSpeedHistory.value.shift();
-  }, 3000);
+  }, 5_000);
 };
 
 watch(ballSpeed, updateRecentBallSpeedHistory);

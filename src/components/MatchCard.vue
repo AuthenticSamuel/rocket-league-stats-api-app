@@ -20,7 +20,7 @@ const statistics = computed<Statistic[]>(() => [
     value: speedFormatter.format(ballSpeed.value ?? 0),
   },
   {
-    label: "Max ball speed (last 3 seconds)",
+    label: "Max ball speed (last 5 seconds)",
     value: speedFormatter.format(highestRecentBallSpeed.value),
   },
 ]);
