@@ -1,5 +1,13 @@
-# Vue 3 + TypeScript + Vite
+# Rocket League Stats API App
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This is a basic web app that connects to your Rocket League client via the [Stats API adapter](https://code.spirkop.com/samuel/rocket-league-stats) I've created previously. This is mostly to show what is possible with these tools.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+Everything happens locally on your device(s), I don't want and I won't get any of your data.
+
+You can use the web app at https://rls.piku.spirkop.com.
+
+### Disclaimers
+
+This project is not affiliated with Psyonix, Epic Games or Tracker Network in any way, shape, or form.
+
+This project was not developed using AI, and never will be.
