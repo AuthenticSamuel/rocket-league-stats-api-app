@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Info, SquareArrowOutUpRight } from "@lucide/vue";
 import { computed } from "vue";
 
 import { Button } from "@/components/ui/button";
@@ -11,20 +12,22 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemTitle,
 } from "@/components/ui/item";
+
 import { useRecentPlayers } from "@/composables/useRecentPlayers";
+
 import { getTrackerNetworkHref } from "@/lib/tracker-network";
-import { SquareArrowOutUpRight } from "@lucide/vue";
 
 const { recentPlayerMap } = useRecentPlayers();
 
 const recentPlayers = computed(() => {
-  return Array.from(recentPlayerMap.value);
+  return Array.from(recentPlayerMap.value).reverse();
 });
 </script>
 
@@ -40,7 +43,19 @@ const recentPlayers = computed(() => {
           Players that you have met during the session.
         </SheetDescription>
       </SheetHeader>
-      <ul class="flex flex-col px-4">
+      <div
+        v-if="!recentPlayers.length"
+        class="px-4"
+      >
+        <Alert>
+          <Info />
+          <AlertTitle>Start playing to track recently met players.</AlertTitle>
+        </Alert>
+      </div>
+      <ul
+        v-else
+        class="flex flex-col overflow-y-auto px-4 pb-4"
+      >
         <Item
           v-for="(player, index) in recentPlayers"
           :key="`${player[0]}-${index}`"
