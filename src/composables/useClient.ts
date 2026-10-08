@@ -17,6 +17,7 @@ const errorHook = createEventHook<Error>();
 const updateStateHook = createEventHook<GameEvent<"UpdateState">>();
 const matchEndedHook = createEventHook<GameEvent<"MatchEnded">>();
 const playerJoinedHook = createEventHook<GameEvent<"PlayerJoined">>();
+const replayCreatedHook = createEventHook<GameEvent<"ReplayCreated">>();
 
 const createHooks = () => {
   if (!client.value) return;
@@ -28,28 +29,29 @@ const createHooks = () => {
   client.value.on("UpdateState", updateStateHook.trigger);
   client.value.on("MatchEnded", matchEndedHook.trigger);
   client.value.on("PlayerJoined", playerJoinedHook.trigger);
+  client.value.on("ReplayCreated", replayCreatedHook.trigger);
 };
 
+const start = () => {
+  if (client.value) stop();
+
+  client.value = new RocketLeagueStatsClient({
+    host: settings.value.host,
+    port: settings.value.port,
+  });
+
+  createHooks();
+};
+
+const stop = () => {
+  if (!client.value) return;
+  client.value.disconnect();
+  client.value = null;
+};
+
+onSettingsChange(() => stop());
+
 export const useClient = () => {
-  const start = () => {
-    if (client.value) stop();
-
-    client.value = new RocketLeagueStatsClient({
-      host: settings.value.host,
-      port: settings.value.port,
-    });
-
-    createHooks();
-  };
-
-  const stop = () => {
-    if (!client.value) return;
-    client.value.disconnect();
-    client.value = null;
-  };
-
-  onSettingsChange(() => stop());
-
   return {
     client,
 
@@ -63,5 +65,6 @@ export const useClient = () => {
     onUpdateState: updateStateHook.on,
     onMatchEnded: matchEndedHook.on,
     onPlayerJoined: playerJoinedHook.on,
+    onReplayCreated: replayCreatedHook.on,
   };
 };

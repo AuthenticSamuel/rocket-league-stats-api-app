@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import Player from "@/components/Player.vue";
 import TeamIndicator from "@/components/TeamIndicator.vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { useUpdateState } from "@/composables/useUpdateState";
 
-import Player from "@/components/Player.vue";
 import type { Team } from "@/types/types";
 
 const props = defineProps<{

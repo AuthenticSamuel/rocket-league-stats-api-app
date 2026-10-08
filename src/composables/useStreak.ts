@@ -31,21 +31,21 @@ const streak = computed(() => {
   };
 });
 
-export const useStreak = () => {
-  const { onMatchEnded } = useClient();
-  const { players } = usePlayers();
-  const { trackedId } = useTracker();
+const { onMatchEnded } = useClient();
+const { players } = usePlayers();
+const { trackedId } = useTracker();
 
-  onMatchEnded((payload) => {
-    const player = players.value.find((player) => {
-      const isCorrectPlayer = player.PrimaryId === trackedId.value;
-      const isCorrectTeam = player.TeamNum === payload.WinnerTeamNum;
-      return isCorrectPlayer && isCorrectTeam;
-    });
-
-    history.value.push(!!player);
+onMatchEnded((payload) => {
+  const player = players.value.find((player) => {
+    const isCorrectPlayer = player.PrimaryId === trackedId.value;
+    const isCorrectTeam = player.TeamNum === payload.WinnerTeamNum;
+    return isCorrectPlayer && isCorrectTeam;
   });
 
+  history.value.push(!!player);
+});
+
+export const useStreak = () => {
   return {
     winCount,
     lossCount,
