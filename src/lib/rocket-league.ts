@@ -1,3 +1,16 @@
+import {
+  Bomb,
+  CirclePlus,
+  Crosshair,
+  Handshake,
+  type LucideIcon,
+  Medal,
+  Shield,
+  ShieldPlus,
+  Sparkle,
+  Trophy,
+} from "@lucide/vue";
+
 export const PLATFORM = {
   STEAM: "Steam",
   EPIC: "Epic",
@@ -9,8 +22,11 @@ export const PLATFORM = {
 
 type PlatformKey = keyof typeof PLATFORM;
 export type Platform = (typeof PLATFORM)[PlatformKey];
+type PlatformMeta = {
+  label: string;
+};
 
-export const PLATFORMS = {
+export const PLATFORMS: Record<Platform, PlatformMeta> = {
   [PLATFORM.STEAM]: {
     label: "Steam",
   },
@@ -43,4 +59,52 @@ export const getPlayerMeta = (primaryId: string) => {
     id,
     isSplitScreen: splitScreen === "1",
   };
+};
+
+export const EVENT_FEED_EVENT = {
+  MVP: "MVP",
+  WIN: "Win",
+  ASSIST: "Assist",
+  GOAL: "Goal",
+  SHOT: "Shot",
+  SAVE: "Save",
+  EPIC_SAVE: "EpicSave",
+  HAT_TRICK: "HatTrick",
+  DEMO: "Demolish",
+} as const;
+
+type EventFeedEventKey = keyof typeof EVENT_FEED_EVENT;
+export type EventFeedEvent = (typeof EVENT_FEED_EVENT)[EventFeedEventKey];
+type EventFeedEventMeta = {
+  icon: LucideIcon;
+};
+
+export const EVENT_FEED_EVENTS: Record<EventFeedEvent, EventFeedEventMeta> = {
+  [EVENT_FEED_EVENT.MVP]: {
+    icon: Medal,
+  },
+  [EVENT_FEED_EVENT.WIN]: {
+    icon: Trophy,
+  },
+  [EVENT_FEED_EVENT.ASSIST]: {
+    icon: Handshake,
+  },
+  [EVENT_FEED_EVENT.GOAL]: {
+    icon: CirclePlus,
+  },
+  [EVENT_FEED_EVENT.SHOT]: {
+    icon: Crosshair,
+  },
+  [EVENT_FEED_EVENT.SAVE]: {
+    icon: Shield,
+  },
+  [EVENT_FEED_EVENT.EPIC_SAVE]: {
+    icon: ShieldPlus,
+  },
+  [EVENT_FEED_EVENT.HAT_TRICK]: {
+    icon: Sparkle,
+  },
+  [EVENT_FEED_EVENT.DEMO]: {
+    icon: Bomb,
+  },
 };

@@ -16,8 +16,10 @@ const errorHook = createEventHook<Error>();
 
 const updateStateHook = createEventHook<GameEvent<"UpdateState">>();
 const matchEndedHook = createEventHook<GameEvent<"MatchEnded">>();
+const matchInitializedHook = createEventHook<GameEvent<"MatchInitialized">>();
 const playerJoinedHook = createEventHook<GameEvent<"PlayerJoined">>();
 const replayCreatedHook = createEventHook<GameEvent<"ReplayCreated">>();
+const statfeedEventHook = createEventHook<GameEvent<"StatfeedEvent">>();
 
 const createHooks = () => {
   if (!client.value) return;
@@ -28,8 +30,10 @@ const createHooks = () => {
 
   client.value.on("UpdateState", updateStateHook.trigger);
   client.value.on("MatchEnded", matchEndedHook.trigger);
+  client.value.on("MatchInitialized", matchInitializedHook.trigger);
   client.value.on("PlayerJoined", playerJoinedHook.trigger);
   client.value.on("ReplayCreated", replayCreatedHook.trigger);
+  client.value.on("StatfeedEvent", statfeedEventHook.trigger);
 };
 
 const start = () => {
@@ -64,7 +68,9 @@ export const useClient = () => {
 
     onUpdateState: updateStateHook.on,
     onMatchEnded: matchEndedHook.on,
+    onMatchInitialized: matchInitializedHook.on,
     onPlayerJoined: playerJoinedHook.on,
     onReplayCreated: replayCreatedHook.on,
+    onStatfeedEvent: statfeedEventHook.on,
   };
 };
