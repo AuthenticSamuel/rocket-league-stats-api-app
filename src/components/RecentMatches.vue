@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Info } from "@lucide/vue";
+import { Info, ListChevronsUpDown } from "@lucide/vue";
 import { computed } from "vue";
 
 import RecentMatch from "@/components/RecentMatch.vue";
@@ -27,7 +27,10 @@ const matches = computed(() => {
 <template>
   <Sheet>
     <SheetTrigger as-child>
-      <Button variant="outline">Recent matches</Button>
+      <Button variant="outline">
+        <ListChevronsUpDown />
+        Recent matches
+      </Button>
     </SheetTrigger>
     <SheetContent>
       <SheetHeader>

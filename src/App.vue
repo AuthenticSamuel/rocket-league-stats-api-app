@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Loader2 } from "@lucide/vue";
+import { Loader2, PlugZap, Unplug } from "@lucide/vue";
 import { onUnmounted, ref } from "vue";
 
 import Dashboard from "@/components/Dashboard.vue";
@@ -57,13 +57,18 @@ const handleDisconnectClick = () => {
           :disabled="isLoading"
           @click="isConnected ? handleDisconnectClick() : handleConnectClick()"
         >
-          <Loader2
-            v-if="isLoading"
-            class="animate-spin"
-          />
-          <template v-if="isConnected">Disconnect</template>
-          <template v-else-if="isLoading">Connecting...</template>
-          <template v-else>Connect</template>
+          <template v-if="isConnected">
+            <Unplug />
+            Disconnect
+          </template>
+          <template v-else-if="isLoading">
+            <Loader2 class="animate-spin" />
+            Connecting...
+          </template>
+          <template v-else>
+            <PlugZap />
+            Connect
+          </template>
         </Button>
         <Settings />
         <ThemeSwitcher />

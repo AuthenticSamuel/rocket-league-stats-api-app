@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Info, SquareArrowOutUpRight } from "@lucide/vue";
+import { Info, SquareArrowOutUpRight, Users } from "@lucide/vue";
 import { computed } from "vue";
 
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,10 @@ const recentPlayers = computed(() => {
 <template>
   <Sheet>
     <SheetTrigger as-child>
-      <Button variant="outline">Recent players</Button>
+      <Button variant="outline">
+        <Users />
+        Recent players
+      </Button>
     </SheetTrigger>
     <SheetContent>
       <SheetHeader>
