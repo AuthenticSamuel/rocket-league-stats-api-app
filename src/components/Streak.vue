@@ -14,6 +14,7 @@ const { streak, winCount, lossCount } = useStreak();
   <Item
     v-if="!isTracking"
     variant="outline"
+    size="2xs"
     class="w-fit"
   >
     <ItemContent>
@@ -23,6 +24,7 @@ const { streak, winCount, lossCount } = useStreak();
   <Item
     v-else-if="!streak"
     variant="outline"
+    size="2xs"
     class="w-fit"
   >
     <ItemContent>
@@ -32,6 +34,7 @@ const { streak, winCount, lossCount } = useStreak();
   <Item
     v-else
     variant="outline"
+    size="2xs"
     class="w-fit"
   >
     <ItemMedia variant="icon">
