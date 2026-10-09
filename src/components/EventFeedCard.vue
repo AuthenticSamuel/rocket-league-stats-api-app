@@ -38,9 +38,9 @@ const getEventMeta = (event: GameEvent<"StatfeedEvent">) => {
           variant="muted"
         >
           <ItemMedia variant="icon">
-            <component :is="getEventMeta(event).icon ?? Circle" />
+            <component :is="getEventMeta(event)?.icon ?? Circle" />
           </ItemMedia>
-          <ItemContent class="flex-row gap-x-2">
+          <ItemContent class="flex-row items-baseline gap-x-2">
             <ItemTitle>
               {{ event.Type }}
             </ItemTitle>

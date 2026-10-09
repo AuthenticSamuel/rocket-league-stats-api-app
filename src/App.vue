@@ -50,8 +50,10 @@ const handleDisconnectClick = () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-4 p-4">
-    <div class="flex items-center justify-between gap-x-2">
+  <div class="flex flex-col items-start gap-y-4 p-4 lg:items-stretch">
+    <div
+      class="flex flex-col items-start justify-between gap-2 lg:flex-row lg:items-center"
+    >
       <div class="flex items-center gap-x-2">
         <Button
           :disabled="isLoading"
