@@ -15,6 +15,7 @@ const disconnectHook = createEventHook<CloseEvent>();
 const errorHook = createEventHook<Error>();
 
 const updateStateHook = createEventHook<GameEvent<"UpdateState">>();
+const matchDestroyedHook = createEventHook<GameEvent<"MatchDestroyed">>();
 const matchEndedHook = createEventHook<GameEvent<"MatchEnded">>();
 const matchInitializedHook = createEventHook<GameEvent<"MatchInitialized">>();
 const playerJoinedHook = createEventHook<GameEvent<"PlayerJoined">>();
@@ -29,6 +30,7 @@ const createHooks = () => {
   client.value.on("Error", errorHook.trigger);
 
   client.value.on("UpdateState", updateStateHook.trigger);
+  client.value.on("MatchDestroyed", matchDestroyedHook.trigger);
   client.value.on("MatchEnded", matchEndedHook.trigger);
   client.value.on("MatchInitialized", matchInitializedHook.trigger);
   client.value.on("PlayerJoined", playerJoinedHook.trigger);
@@ -67,6 +69,7 @@ export const useClient = () => {
     onError: errorHook.on,
 
     onUpdateState: updateStateHook.on,
+    onMatchDestroyed: matchDestroyedHook.on,
     onMatchEnded: matchEndedHook.on,
     onMatchInitialized: matchInitializedHook.on,
     onPlayerJoined: playerJoinedHook.on,

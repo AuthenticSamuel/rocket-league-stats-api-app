@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { ChevronsDown, ChevronsUp, CircleQuestionMark } from "@lucide/vue";
+import { computed } from "vue";
+
 import TeamIndicator from "@/components/TeamIndicator.vue";
 import {
   Item,
@@ -9,8 +12,6 @@ import {
 import { useTracker } from "@/composables/useTracker";
 
 import type { GameEvent } from "@/types/types";
-import { ChevronsDown, ChevronsUp } from "@lucide/vue";
-import { computed } from "vue";
 
 const props = defineProps<{
   match: GameEvent<"UpdateState">;
@@ -27,6 +28,8 @@ const isWin = computed(() => {
   if (!player) return null;
 
   const teams = props.match.Game.Teams;
+  if (teams[0].Score === teams[1].Score) return null;
+
   const winningTeam = teams.reduce((prev, curr) => {
     return prev && prev.Score > curr.Score ? prev : curr;
   });
@@ -46,6 +49,9 @@ const isWin = computed(() => {
         <template v-else-if="isWin === false">
           <ChevronsDown class="size-4 stroke-red-700" />
           Loss
+        </template>
+        <template v-else>
+          <CircleQuestionMark class="size-4 stroke-muted-foreground" />
         </template>
         {{ match.Game.Teams[0].Score }}
         -

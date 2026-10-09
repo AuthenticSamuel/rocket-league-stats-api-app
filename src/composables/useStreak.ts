@@ -1,54 +1,69 @@
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
-import { useClient } from "@/composables/useClient";
-import { usePlayers } from "@/composables/usePlayers";
+import { useRecentMatches } from "@/composables/useRecentMatches";
 import { useTracker } from "@/composables/useTracker";
 
-const history = ref<boolean[]>([]);
+import type { GameEvent } from "@/types/types";
 
-const winCount = computed(() => {
-  return history.value.filter((isWin) => isWin).length;
+const { recentMatches } = useRecentMatches();
+const { isTracking, trackedId } = useTracker();
+
+const getIsWin = (state: GameEvent<"UpdateState">) => {
+  if (!isTracking.value) return null;
+
+  const player = state.Players.find((player) => {
+    return player.PrimaryId === trackedId.value;
+  });
+  if (!player) return null;
+
+  const teams = state.Game.Teams;
+  if (teams[0].Score === teams[1].Score) return null;
+
+  const winningTeam = teams.reduce((prev, curr) => {
+    return prev && prev.Score > curr.Score ? prev : curr;
+  });
+
+  return player.TeamNum === winningTeam.TeamNum;
+};
+
+const wins = computed(() => {
+  return recentMatches.value.filter((state) => {
+    return getIsWin(state) === true;
+  });
 });
 
-const lossCount = computed(() => {
-  return history.value.filter((isWin) => !isWin).length;
+const losses = computed(() => {
+  return recentMatches.value.filter((state) => {
+    return getIsWin(state) === false;
+  });
+});
+
+const underminedOutcomes = computed(() => {
+  return recentMatches.value.filter((state) => {
+    return getIsWin(state) === null;
+  });
 });
 
 const streak = computed(() => {
-  const isWinStreak = history.value.at(-1) ?? null;
-  if (isWinStreak === null) return null;
+  let streak = 0;
+  let previousIsWin: boolean | null = null;
 
-  let streakCount = 0;
-  for (let i = history.value.length - 1; i >= 0; i--) {
-    const isWin = history.value[i];
-    if (isWin !== isWinStreak) break;
-    streakCount++;
+  for (const match of recentMatches.value.slice().reverse()) {
+    const isWin = getIsWin(match);
+    if (isWin === true && [true, null].includes(previousIsWin)) streak++;
+    if (isWin === false && [false, null].includes(previousIsWin)) streak--;
+    if (previousIsWin !== null && previousIsWin !== isWin) break;
+    previousIsWin = isWin;
   }
 
-  return {
-    isWinStreak,
-    streakCount,
-  };
-});
-
-const { onMatchEnded } = useClient();
-const { players } = usePlayers();
-const { trackedId } = useTracker();
-
-onMatchEnded((payload) => {
-  const player = players.value.find((player) => {
-    const isCorrectPlayer = player.PrimaryId === trackedId.value;
-    const isCorrectTeam = player.TeamNum === payload.WinnerTeamNum;
-    return isCorrectPlayer && isCorrectTeam;
-  });
-
-  history.value.push(!!player);
+  return streak;
 });
 
 export const useStreak = () => {
   return {
-    winCount,
-    lossCount,
+    wins,
+    losses,
+    underminedOutcomes,
     streak,
   };
 };

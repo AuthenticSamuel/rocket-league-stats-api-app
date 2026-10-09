@@ -7,7 +7,7 @@ import { useStreak } from "@/composables/useStreak";
 import { useTracker } from "@/composables/useTracker";
 
 const { isTracking } = useTracker();
-const { streak, winCount, lossCount } = useStreak();
+const { streak, wins, losses } = useStreak();
 </script>
 
 <template>
@@ -22,43 +22,40 @@ const { streak, winCount, lossCount } = useStreak();
     </ItemContent>
   </Item>
   <Item
-    v-else-if="!streak"
-    variant="outline"
-    size="2xs"
-    class="w-fit"
-  >
-    <ItemContent>
-      <ItemTitle>Start playing and stay until the end of matches</ItemTitle>
-    </ItemContent>
-  </Item>
-  <Item
     v-else
     variant="outline"
     size="2xs"
     class="w-fit"
   >
-    <ItemMedia variant="icon">
+    <ItemMedia
+      v-if="Math.abs(streak)"
+      variant="icon"
+    >
       <ChevronsUp
-        v-if="streak.isWinStreak"
+        v-if="streak > 0"
         class="stroke-green-700"
       />
       <ChevronsDown
-        v-else
+        v-else-if="streak < 0"
         class="stroke-red-700"
       />
     </ItemMedia>
     <ItemContent>
       <ItemTitle>
         <div class="flex gap-x-2">
+          <template v-if="Math.abs(streak)">
+            <div>
+              {{ Math.abs(streak) }}
+              <template v-if="streak > 0">win streak</template>
+              <template v-else-if="streak < 0">loss streak</template>
+            </div>
+            <div class="text-muted-foreground">/</div>
+          </template>
+          <div>{{ wins.length }} win{{ wins.length === 1 ? "" : "s" }}</div>
+          <div class="text-muted-foreground">/</div>
           <div>
-            {{ streak.streakCount }}
-            <template v-if="streak.isWinStreak">win streak</template>
-            <template v-else>loss streak</template>
+            {{ losses.length }} loss{{ losses.length === 1 ? "" : "es" }}
           </div>
-          <div class="text-muted-foreground">/</div>
-          <div>{{ winCount }} win{{ winCount === 1 ? "" : "s" }}</div>
-          <div class="text-muted-foreground">/</div>
-          <div>{{ lossCount }} loss{{ lossCount === 1 ? "" : "es" }}</div>
         </div>
       </ItemTitle>
     </ItemContent>
