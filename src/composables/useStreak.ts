@@ -50,6 +50,7 @@ const streak = computed(() => {
 
   for (const match of recentMatches.value.slice().reverse()) {
     const isWin = getIsWin(match);
+    if (isWin === null) continue;
     if (isWin === true && [true, null].includes(previousIsWin)) streak++;
     if (isWin === false && [false, null].includes(previousIsWin)) streak--;
     if (previousIsWin !== null && previousIsWin !== isWin) break;

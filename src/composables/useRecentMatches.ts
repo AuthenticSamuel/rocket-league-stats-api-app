@@ -7,14 +7,12 @@ import type { GameEvent } from "@/types/types";
 
 const recentMatches = ref<GameEvent<"UpdateState">[]>([]);
 
-const { onMatchDestroyed, onMatchEnded } = useClient();
+const { onMatchDestroyed } = useClient();
 const { state } = useUpdateState();
 
 const previousManagedMatchId = ref<string | null>(null);
 
-const addRecentMatch = (
-  payload: GameEvent<"MatchDestroyed" | "MatchEnded">,
-) => {
+const addRecentMatch = (payload: GameEvent<"MatchDestroyed">) => {
   if (!payload.MatchGuid) return;
   if (previousManagedMatchId.value === payload.MatchGuid) return;
 
@@ -26,7 +24,6 @@ const addRecentMatch = (
 };
 
 onMatchDestroyed(addRecentMatch);
-onMatchEnded(addRecentMatch);
 
 export const useRecentMatches = () => {
   return {
