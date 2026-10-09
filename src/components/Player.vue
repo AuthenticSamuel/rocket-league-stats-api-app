@@ -109,7 +109,7 @@ const { isTracking, getIsTracking, startTracking, stopTracking } = useTracker();
       collapsible
     >
       <AccordionItem :value="player.PrimaryId">
-        <AccordionTrigger>Tracker</AccordionTrigger>
+        <AccordionTrigger>Tracker Network profile</AccordionTrigger>
         <AccordionContent class="pb-0">
           <iframe
             :src="trackerHref"
