@@ -12,22 +12,30 @@ const { host, port } = useSettings();
     <AlertDescription>
       <p>Could not connect to your Rocket League client.</p>
       <ul class="list-inside list-disc">
-        <li>Is the game open ?</li>
         <li>
-          Have you enabled the Stats API ? Tutorial
-          <a
-            href="https://www.rocketleague.com/developer/stats-api#configuration"
-            target="_blank"
-            >here</a
-          >.
+          <span> Is the game open ? </span>
         </li>
         <li>
-          Have you configured the host and port correctly ? This page is
-          listening to {{ host }} on port {{ port }}.
+          <span>
+            Have you enabled the Stats API ? Tutorial
+            <a
+              href="https://www.rocketleague.com/developer/stats-api#configuration"
+              target="_blank"
+              >here</a
+            >.
+          </span>
         </li>
         <li>
-          Have you allowed your browser to access your local network ? Needed to
-          listen to your Rocket League client's websocket.
+          <span>
+            Have you configured the host and port correctly ? This page is
+            listening to {{ host }} on port {{ port }}.
+          </span>
+        </li>
+        <li>
+          <span>
+            Have you allowed your browser to access your local network ? Needed
+            to listen to your Rocket League client's websocket.
+          </span>
         </li>
       </ul>
     </AlertDescription>
