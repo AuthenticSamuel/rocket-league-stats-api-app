@@ -1,4 +1,4 @@
-import type { ClientGameEvents } from "@infernaldev/rlstats";
+import type { ClientGameEvents } from "rocket-league-stats-api-client";
 
 type Player = ClientGameEvents["UpdateState"][0]["Players"][0];
 

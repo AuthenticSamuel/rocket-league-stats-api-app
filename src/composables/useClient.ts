@@ -1,5 +1,5 @@
-import { RocketLeagueStatsClient } from "@infernaldev/rlstats";
 import { createEventHook } from "@vueuse/core";
+import { RocketLeagueStatsClient } from "rocket-league-stats-api-client";
 import { ref } from "vue";
 
 import { useSettings } from "@/composables/useSettings";
