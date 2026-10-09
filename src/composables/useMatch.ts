@@ -1,7 +1,25 @@
 import { computed, ref, watch } from "vue";
 
+import { useClient } from "@/composables/useClient";
 import { useTeams } from "@/composables/useTeams";
 import { useUpdateState } from "@/composables/useUpdateState";
+
+const { onUpdateState } = useClient();
+
+const isInMatch = ref(false);
+let timeoutId: number | null = null;
+
+onUpdateState(() => {
+  isInMatch.value = true;
+
+  if (timeoutId) {
+    clearTimeout(timeoutId);
+  }
+
+  timeoutId = setTimeout(() => {
+    isInMatch.value = false;
+  }, 2_000);
+});
 
 const { state } = useUpdateState();
 const { getTeamByNum } = useTeams();
@@ -35,6 +53,7 @@ const ballLastTouchedBy = computed(() => {
 
 export const useMatch = () => {
   return {
+    isInMatch,
     ballSpeed,
     highestRecentBallSpeed,
     ballLastTouchedBy,

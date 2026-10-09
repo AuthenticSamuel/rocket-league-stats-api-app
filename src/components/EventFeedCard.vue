@@ -14,6 +14,7 @@ import {
 import { useEventFeed } from "@/composables/useEventFeed";
 
 import { EVENT_FEED_EVENTS, type EventFeedEvent } from "@/lib/rocket-league";
+
 import type { GameEvent } from "@/types/types";
 
 const { eventFeed } = useEventFeed();
