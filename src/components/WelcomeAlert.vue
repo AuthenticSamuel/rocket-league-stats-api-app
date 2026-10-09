@@ -12,7 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
       <p>
         This simple webapp was made to show off how to use the
         <a
-          href="https://github.com/AuthenticSamuel/rocket-league-stats-api-client"
+          href="https://code.spirkop.com/samuel/rocket-league-stats-api-client"
           target="_blank"
         >
           Rocket League Stats API client</a
@@ -51,7 +51,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
       <p>
         This project is 100% human-made and
         <a
-          href="https://github.com/AuthenticSamuel/rocket-league-stats-api-app"
+          href="https://code.spirkop.com/samuel/rocket-league-stats-api-app"
           target="_blank"
           >open-source</a
         >. No AI or LLMs were used during any phase of development. None of your
