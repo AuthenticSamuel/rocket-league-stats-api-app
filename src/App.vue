@@ -11,6 +11,7 @@ import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import { Button } from "@/components/ui/button";
 
 import RecentMatches from "@/components/RecentMatches.vue";
+import WelcomeAlert from "@/components/WelcomeAlert.vue";
 import { useClient } from "@/composables/useClient";
 
 const { start, stop, onConnect, onDisconnect, onError } = useClient();
@@ -83,5 +84,6 @@ const handleDisconnectClick = () => {
     </div>
     <ErrorAlert v-if="isError" />
     <Dashboard v-else-if="isConnected" />
+    <WelcomeAlert />
   </div>
 </template>
