@@ -26,8 +26,14 @@ const players = computed(() => {
 <template>
   <Card>
     <CardHeader>
-      <CardTitle>
-        <TeamIndicator :team />
+      <CardTitle class="overflow-hidden">
+        <div class="flex items-center gap-x-2">
+          <div class="truncate">
+            {{ team.Name }}
+          </div>
+          <TeamIndicator :team />
+          <div class="ml-auto">{{ team.Score }}</div>
+        </div>
       </CardTitle>
     </CardHeader>
     <CardContent>

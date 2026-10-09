@@ -40,8 +40,8 @@ const isWin = computed(() => {
 
 <template>
   <Item variant="muted">
-    <ItemContent class="flex-row justify-between">
-      <ItemTitle>
+    <ItemContent class="flex-row justify-between overflow-hidden">
+      <ItemTitle class="shrink-0 text-nowrap">
         <template v-if="isWin === true">
           <ChevronsUp class="size-4 stroke-green-700" />
           Win
@@ -57,10 +57,18 @@ const isWin = computed(() => {
         -
         {{ match.Game.Teams[1].Score }}
       </ItemTitle>
-      <ItemDescription class="flex items-center gap-x-2">
-        <TeamIndicator :team="match.Game.Teams[0]" />
+      <ItemDescription class="flex items-center gap-x-2 px-1">
+        <div class="flex items-center gap-x-2 overflow-x-hidden">
+          <div class="truncate">
+            {{ match.Game.Teams[0].Name }}
+          </div>
+          <TeamIndicator :team="match.Game.Teams[0]" />
+        </div>
         <span>vs</span>
-        <TeamIndicator :team="match.Game.Teams[1]" />
+        <div class="flex items-center gap-x-2">
+          <div>{{ match.Game.Teams[1].Name }}</div>
+          <TeamIndicator :team="match.Game.Teams[1]" />
+        </div>
       </ItemDescription>
     </ItemContent>
   </Item>
