@@ -6,6 +6,7 @@ import z from "zod";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,8 @@ import { useSettings } from "@/composables/useSettings";
 
 import { isInvalid } from "@/lib/form";
 
+const { host, port, autoConnect } = useSettings();
+
 const isOpen = ref<boolean>(false);
 
 watch(isOpen, (isOpen) => {
@@ -34,20 +37,21 @@ watch(isOpen, (isOpen) => {
   form.reset({
     host: host.value,
     port: port.value,
+    autoConnect: autoConnect.value,
   });
 });
-
-const { host, port } = useSettings();
 
 const formSchema = z.object({
   host: z.string().min(1),
   port: z.number(),
+  autoConnect: z.boolean(),
 });
 
 const form = useForm({
   defaultValues: {
     host: host.value,
     port: port.value,
+    autoConnect: autoConnect.value,
   } satisfies z.infer<typeof formSchema>,
   validators: {
     onSubmit: formSchema,
@@ -55,6 +59,7 @@ const form = useForm({
   onSubmit: async ({ value }) => {
     host.value = value.host;
     port.value = value.port;
+    autoConnect.value = value.autoConnect;
     isOpen.value = false;
   },
 });
@@ -126,27 +131,51 @@ const handleCancelClick = () => {
               />
             </Field>
           </form.Field>
+          <Alert>
+            <Info />
+            <AlertTitle>Info</AlertTitle>
+            <AlertDescription>
+              Make sure you have enabled the
+              <a
+                href="https://www.rocketleague.com/developer/stats-api"
+                target="_blank"
+                >Rocket League Stats API</a
+              >
+              first otherwise you won't be able to connect. You can find
+              instructions
+              <a
+                href="https://www.rocketleague.com/developer/stats-api#configuration"
+                target="_blank"
+                >here</a
+              >.
+            </AlertDescription>
+          </Alert>
+          <form.Field
+            name="autoConnect"
+            #default="{ field }"
+          >
+            <Field
+              :data-invalid="isInvalid(field)"
+              orientation="horizontal"
+            >
+              <Checkbox
+                :id="field.name"
+                :name="field.name"
+                :model-value="field.state.value"
+                :aria-invalid="isInvalid(field)"
+                @blur="field.handleBlur"
+                @update:model-value="field.handleChange(!!$event)"
+              />
+              <FieldLabel :for="field.name">Auto-connect</FieldLabel>
+              <FieldError
+                v-if="isInvalid(field)"
+                :errors="field.state.meta.errors"
+              />
+            </Field>
+          </form.Field>
         </FieldGroup>
       </form>
-      <Alert>
-        <Info />
-        <AlertTitle>Info</AlertTitle>
-        <AlertDescription>
-          Make sure you have enabled the
-          <a
-            href="https://www.rocketleague.com/developer/stats-api"
-            target="_blank"
-            >Rocket League Stats API</a
-          >
-          first otherwise you won't be able to connect. You can find
-          instructions
-          <a
-            href="https://www.rocketleague.com/developer/stats-api#configuration"
-            target="_blank"
-            >here</a
-          >.
-        </AlertDescription>
-      </Alert>
+
       <DialogFooter>
         <Button
           @click="handleCancelClick"

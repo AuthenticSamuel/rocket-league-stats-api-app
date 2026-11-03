@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { cn } from "cn";
+
 import EventFeedCard from "@/components/EventFeedCard.vue";
 import MatchCard from "@/components/MatchCard.vue";
 import TeamCard from "@/components/TeamCard.vue";
-import { useMatch } from "@/composables/useMatch";
 
+import { useMatch } from "@/composables/useMatch";
 import { useTeams } from "@/composables/useTeams";
-import { cn } from "@/lib/utils";
 
 const { isInMatch } = useMatch();
 const { teams } = useTeams();

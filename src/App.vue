@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Loader2, PlugZap, Unplug } from "@lucide/vue";
-import { onUnmounted, ref } from "vue";
+import { onUnmounted } from "vue";
 
 import Dashboard from "@/components/Dashboard.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
@@ -14,40 +14,18 @@ import RecentMatches from "@/components/RecentMatches.vue";
 import WelcomeAlert from "@/components/WelcomeAlert.vue";
 import { useClient } from "@/composables/useClient";
 
-const { start, stop, onConnect, onDisconnect, onError } = useClient();
+const {
+  start,
+  stop,
+  isConnecting,
+  isAutoConnecting,
+  isConnected,
+  isConnectionError,
+} = useClient();
 
 onUnmounted(() => {
   stop();
 });
-
-const isLoading = ref(false);
-const isConnected = ref(false);
-const isError = ref(false);
-
-onConnect(() => {
-  isConnected.value = true;
-  isLoading.value = false;
-});
-
-onDisconnect(() => {
-  isConnected.value = false;
-});
-
-onError(() => {
-  isError.value = true;
-  isLoading.value = false;
-});
-
-const handleConnectClick = () => {
-  isLoading.value = true;
-  isError.value = false;
-  start();
-};
-
-const handleDisconnectClick = () => {
-  isError.value = false;
-  stop();
-};
 </script>
 
 <template>
@@ -57,14 +35,18 @@ const handleDisconnectClick = () => {
     >
       <div class="flex items-center gap-x-2">
         <Button
-          :disabled="isLoading"
-          @click="isConnected ? handleDisconnectClick() : handleConnectClick()"
+          :disabled="isConnecting || isAutoConnecting"
+          @click="isConnected ? stop() : start()"
         >
           <template v-if="isConnected">
             <Unplug />
             Disconnect
           </template>
-          <template v-else-if="isLoading">
+          <template v-else-if="isAutoConnecting">
+            <Loader2 class="animate-spin" />
+            Auto-connecting...
+          </template>
+          <template v-else-if="isConnecting">
             <Loader2 class="animate-spin" />
             Connecting...
           </template>
@@ -82,7 +64,7 @@ const handleDisconnectClick = () => {
         <Streak />
       </div>
     </div>
-    <ErrorAlert v-if="isError" />
+    <ErrorAlert v-if="isConnectionError" />
     <Dashboard v-else-if="isConnected" />
     <WelcomeAlert />
   </div>

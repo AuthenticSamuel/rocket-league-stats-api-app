@@ -1,18 +1,42 @@
-import { createEventHook } from "@vueuse/core";
+import { createEventHook, useIntervalFn } from "@vueuse/core";
 import { RocketLeagueStatsClient } from "rocket-league-stats-api-client";
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { useSettings } from "@/composables/useSettings";
 
 import type { GameEvent } from "@/types/types";
 
-const { settings, onSettingsChange } = useSettings();
+const { autoConnect, settings, onSettingsChange } = useSettings();
 
 const client = ref<RocketLeagueStatsClient | null>(null);
+
+const isConnecting = ref(false);
+const isConnected = ref(false);
+const isConnectionError = ref(false);
 
 const connectHook = createEventHook<Event>();
 const disconnectHook = createEventHook<CloseEvent>();
 const errorHook = createEventHook<Error>();
+
+connectHook.on(() => {
+  isConnected.value = true;
+  isConnecting.value = false;
+  isConnectionError.value = false;
+
+  if (autoConnect.value) attemptAutoConnect.pause();
+});
+
+disconnectHook.on(() => {
+  isConnected.value = false;
+  isConnectionError.value = false;
+
+  if (autoConnect.value) attemptAutoConnect.resume();
+});
+
+errorHook.on(() => {
+  isConnecting.value = false;
+  isConnectionError.value = true;
+});
 
 const updateStateHook = createEventHook<GameEvent<"UpdateState">>();
 
@@ -41,6 +65,9 @@ const createHooks = () => {
 };
 
 const start = () => {
+  isConnecting.value = true;
+  isConnectionError.value = false;
+
   if (client.value) stop();
 
   client.value = new RocketLeagueStatsClient({
@@ -52,12 +79,29 @@ const start = () => {
 };
 
 const stop = () => {
+  isConnecting.value = false;
+  isConnectionError.value = false;
+
   if (!client.value) return;
+
   client.value.disconnect();
   client.value = null;
 };
 
 onSettingsChange(() => stop());
+
+const attemptAutoConnect = useIntervalFn(start, 10_000);
+
+const isAutoConnecting = computed(() => attemptAutoConnect.isActive.value);
+
+watch(
+  autoConnect,
+  (autoConnect) => {
+    if (autoConnect) attemptAutoConnect.resume();
+    else attemptAutoConnect.pause();
+  },
+  { immediate: true },
+);
 
 export const useClient = () => {
   return {
@@ -65,6 +109,11 @@ export const useClient = () => {
 
     start,
     stop,
+
+    isConnecting,
+    isAutoConnecting,
+    isConnected,
+    isConnectionError,
 
     onConnect: connectHook.on,
     onDisconnect: disconnectHook.on,
